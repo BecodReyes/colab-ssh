@@ -57,7 +57,7 @@ else
 		wget -qO /tmp/servers.conf $confurl
 		testconfig
 	else
-		"[Error] 配置文件链接不正确!"
+		echo "[Error] 配置文件链接不正确!"
 	fi
 fi
 }
