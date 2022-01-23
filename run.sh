@@ -6,7 +6,7 @@ for i in `cat /tmp/servers.conf`;do
 	ip=`echo $i|awk -F',' '{print $1}'`
 	port=`echo $i|awk -F',' '{print $2}'`
 	token=`echo $i|awk -F',' '{print $3}'`
-cat << EOF > /tmp/frpc_conf/$ip
+cat << EOF > /tmp/frp/conf/$ip.conf
 [common]
 server_addr = $ip
 server_port = $port
@@ -25,7 +25,7 @@ local_port = 22
 remote_port = $randomport
 use_compression = true
 EOF
-	nohup /tmp/frpc -c /tmp/frpc_conf/$ip > frp_${ip}_log.out &
+	nohup /tmp/frp/frpc -c /tmp/frp/conf/$ip.conf > frp_${ip}_log.out 2>&1 &
 	echo "[Info] "$ip":"$randomport"创建成功"
 done
 }
@@ -76,10 +76,11 @@ echo "[Info] 正在初始化中"
 username=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 6`
 sleep 0.1s
 passwd=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 12`
-randomport=`shuf -i 20480-65000 -n 1`
+randomport=`shuf -i 10240-50000 -n 1`
 
 killall sshd
 killall frpc
+rm -rf /tmp/frp
 
 #获取服务器IP
 server_local=`curl -s http://ip-api.com/line/?lang=zh-CN|sed -n -e 2p -e 5p -e 6p`
@@ -94,13 +95,13 @@ echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
 
 echo "[Info] 正在启动ssh"
-nohup /usr/sbin/sshd -D > sshd_log.out &
+nohup /usr/sbin/sshd -D > sshd_log.out 2>&1 &
 
 echo "[Info] 正在获取frpc"
-mkdir /tmp/frpc_conf
+mkdir -p /tmp/frp/conf
 wget -qO /tmp/frpc.tar.gz "https://github.com/fatedier/frp/releases/download/v0.38.0/frp_0.38.0_linux_amd64.tar.gz"
 echo "[Info] 正在解压frpc"
-tar --strip-components 1 -zxf /tmp/frpc.tar.gz -C /tmp/
+tar --strip-components 1 -zxf /tmp/frpc.tar.gz -C /tmp/frp
 getconfig
 }
 
