@@ -106,3 +106,5 @@ getconfig
 }
 
 run
+
+bash $1
