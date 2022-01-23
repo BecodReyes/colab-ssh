@@ -45,7 +45,7 @@ echo "[Info] 正在获取服务器配置"
 echo "[Info] 配置文件格式：<服务器IP>,<服务器端口>,<认证密码>"
 
 if [ -z "$1" ];then
-	if [ ! -f ".env" ];then
+	if [ -f ".env" ];then
 		cp .env /tmp/servers.conf -rf
 		testconfig
 	else
