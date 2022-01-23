@@ -28,6 +28,12 @@ EOF
 	nohup /tmp/frp/frpc -c /tmp/frp/conf/$ip.conf > frp_${ip}_log.out 2>&1 &
 	echo "[Info] "$ip":"$randomport"创建成功"
 done
+
+while true
+do
+	cat /proc/uptime | awk '{printf("单次运行剩余时间 : %.2f", 12-$1/60/60)}'
+	sleep 60s
+done
 }
 
 testconfig(){
