@@ -6,7 +6,7 @@ for i in `cat /tmp/servers.conf`;do
 	ip=`echo $i|awk -F',' '{print $1}'`
 	port=`echo $i|awk -F',' '{print $2}'`
 	token=`echo $i|awk -F',' '{print $3}'`
-cat << EOF > /tmp/frpc/$ip
+cat << EOF > /tmp/frpc_conf/$ip
 [common]
 server_addr = $ip
 server_port = $port
@@ -25,7 +25,7 @@ local_port = 22
 remote_port = $randomport
 use_compression = true
 EOF
-	nohup /tmp/frp/frpc -c /tmp/frpc/$ip > frp_${ip}_log.out &
+	nohup /tmp/frp/frpc -c /tmp/frpc_conf/$ip > frp_${ip}_log.out &
 	echo "[Info] "$ip":"$port"创建成功"
 done
 }
@@ -97,7 +97,7 @@ echo "[Info] 正在启动ssh"
 nohup /usr/sbin/sshd -D > sshd_log.out &
 
 echo "[Info] 正在获取frpc"
-mkdir /tmp/frpc
+mkdir /tmp/frpc_conf
 wget -qO /tmp/frpc.tar.gz "https://github.com/fatedier/frp/releases/download/v0.38.0/frp_0.38.0_linux_amd64.tar.gz"
 echo "[Info] 正在解压frpc"
 tar --strip-components 1 -zxf /tmp/frpc.tar.gz -C /tmp/
