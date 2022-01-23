@@ -104,4 +104,4 @@ tar --strip-components 1 -zxf /tmp/frpc.tar.gz -C /tmp/
 getconfig
 }
 
-runfrp
+run
