@@ -31,9 +31,7 @@ EOF
 done
 }
 
-getconfig(){
-echo "[Info] 正在获取服务器配置"
-wget -qO /tmp/servers.conf $confurl
+testconfig(){
 if [[ `grep -o ',' /tmp/servers.conf|wc -l` -lt "3" ]];then
 	echo "[Error] 配置文件疑似损坏，请重试"
 else
@@ -44,14 +42,23 @@ fi
 
 getconfig(){
 echo "[Info] 正在获取服务器配置"
-echo "[Info] 请输入服务器配置文件链接"
 echo "[Info] 配置文件格式：<服务器IP>,<服务器端口>,<认证密码>"
-echo "[Info] 只用填充以上部分，剩余我们会帮你处理的"
-read -p "请输入 " confurl
-if [[ $confurl == http* ]];then
-	getconfig
+
+if [ -z "$1" ];do
+	if [ ! -f ".env" ]; then
+		testconfig
+	else
+		echo "[Error] 配置文件未引用，请重试"
+	fi
 else
-	"[Error] 配置文件链接不正确!"
+	confurl=$1
+	if [[ $confurl == http* ]];then
+		echo "[Info] 正在获取服务器配置"
+		wget -qO /tmp/servers.conf $confurl
+		testconfig
+	else
+		"[Error] 配置文件链接不正确!"
+	fi
 fi
 }
 
@@ -96,15 +103,4 @@ tar --strip-components 1 -zxf /tmp/frpc.tar.gz -C /tmp/
 getconfig
 }
 
-lasttime(){ #watch有点问题，用which+tail
-while true;do
-	cat /proc/uptime | awk '{printf("本次运行剩余时间 : %.2f", 12-$1/60/60)}' > /tmp/lasttime
-	sleep 5s
-done
-}
-
-if [[ "$1" == "last" ]];then
-	lasttime
-else
-	run
-fi
+runfrp
