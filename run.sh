@@ -85,18 +85,18 @@ sleep 0.1s
 passwd=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 12`
 randomport=`shuf -i 10240-50000 -n 1`
 
-killall sshd > /dev/null
-killall frpc > /dev/null
+killall sshd
+killall frpc
 rm -rf /tmp/frp
 
 #获取服务器IP
 server_local=`curl -s http://ip-api.com/line/?lang=zh-CN|sed -n -e 2p -e 5p -e 6p`
 
 echo "[Info] 正在获取openssh"
-apt-get install -qq -o=Dpkg::Use-Pty=0 openssh-server pwgen -y > /dev/null
+apt-get install -qq -o=Dpkg::Use-Pty=0 openssh-server pwgen -y > /dev/null 2>&1 &
 
 echo "[Info] 正在修改ssh设置"
-echo root:$passwd | chpasswd > /dev/null
+echo root:$passwd | chpasswd
 mkdir -p /var/run/sshd
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
