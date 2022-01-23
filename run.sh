@@ -25,7 +25,7 @@ local_port = 22
 remote_port = $randomport
 use_compression = true
 EOF
-	nohup /tmp/frp/frpc -c /tmp/frpc_conf/$ip > frp_${ip}_log.out &
+	nohup /tmp/frpc -c /tmp/frpc_conf/$ip > frp_${ip}_log.out &
 	echo "[Info] "$ip":"$port"创建成功"
 done
 }
