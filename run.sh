@@ -86,7 +86,7 @@ killall frpc
 server_local=`curl -s http://ip-api.com/line/?lang=zh-CN|sed -n -e 2p -e 5p -e 6p`
 
 echo "[Info] 正在获取openssh"
-apt-get install -qq -o=Dpkg::Use-Pty=0 openssh-server pwgen -y
+apt-get install -qq -o=Dpkg::Use-Pty=0 openssh-server pwgen -y > /dev/null
 
 echo "[Info] 正在修改ssh设置"
 echo root:$passwd | chpasswd
