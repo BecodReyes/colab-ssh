@@ -26,7 +26,7 @@ remote_port = $randomport
 use_compression = true
 EOF
 	nohup /tmp/frpc -c /tmp/frpc_conf/$ip > frp_${ip}_log.out &
-	echo "[Info] "$ip":"$port"创建成功"
+	echo "[Info] "$ip":"$randomport"创建成功"
 done
 }
 
