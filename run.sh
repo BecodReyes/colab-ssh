@@ -27,7 +27,6 @@ use_compression = true
 EOF
 	nohup /tmp/frp/frpc -c /tmp/frpc/$ip > frp_${ip}_log.out &
 	echo "[Info] "$ip":"$port"创建成功"
-	read -p
 done
 }
 
@@ -98,6 +97,7 @@ echo "[Info] 正在启动ssh"
 nohup /usr/sbin/sshd -D > sshd_log.out &
 
 echo "[Info] 正在获取frpc"
+mkdir /tmp/frpc
 wget -qO /tmp/frpc.tar.gz "https://github.com/fatedier/frp/releases/download/v0.38.0/frp_0.38.0_linux_amd64.tar.gz"
 echo "[Info] 正在解压frpc"
 tar --strip-components 1 -zxf /tmp/frpc.tar.gz -C /tmp/
