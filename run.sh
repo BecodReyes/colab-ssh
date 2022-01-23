@@ -46,6 +46,7 @@ echo "[Info] 配置文件格式：<服务器IP>,<服务器端口>,<认证密码>
 
 if [ -z "$1" ];do
 	if [ ! -f ".env" ]; then
+		cp .env /tmp/servers.conf -rf
 		testconfig
 	else
 		echo "[Error] 配置文件未引用，请重试"
