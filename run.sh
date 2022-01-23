@@ -32,7 +32,7 @@ done
 while true
 do
 	cat /proc/uptime | awk '{printf("单次运行剩余时间 : %.2f", 12-$1/60/60)}'
-	echo -e "\n"
+	echo ""
 	sleep 60s
 done
 }
@@ -85,8 +85,8 @@ sleep 0.1s
 passwd=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 12`
 randomport=`shuf -i 10240-50000 -n 1`
 
-killall sshd
-killall frpc
+killall sshd > /dev/null
+killall frpc > /dev/null
 rm -rf /tmp/frp
 
 #获取服务器IP
@@ -96,7 +96,7 @@ echo "[Info] 正在获取openssh"
 apt-get install -qq -o=Dpkg::Use-Pty=0 openssh-server pwgen -y > /dev/null
 
 echo "[Info] 正在修改ssh设置"
-echo root:$passwd | chpasswd
+echo root:$passwd | chpasswd > /dev/null
 mkdir -p /var/run/sshd
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
