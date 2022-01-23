@@ -32,6 +32,7 @@ done
 while true
 do
 	cat /proc/uptime | awk '{printf("单次运行剩余时间 : %.2f", 12-$1/60/60)}'
+	echo -e "\n"
 	sleep 60s
 done
 }
