@@ -85,8 +85,8 @@ sleep 0.1s
 passwd=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 12`
 randomport=`shuf -i 10240-50000 -n 1`
 
-killall sshd
-killall frpc
+nohup killall sshd &
+nohup killall frpc &
 rm -rf /tmp/frp
 
 #获取服务器IP
