@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 
 runfrp(){
 echo "[Info] SSH已启动，请使用下面创建成功的连接信息和密码 "$passwd" 登录到服务器"
@@ -85,8 +85,8 @@ sleep 0.1s
 passwd=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 12`
 randomport=`shuf -i 10240-50000 -n 1`
 
-nohup killall sshd &
-nohup killall frpc &
+killall sshd
+killall frpc
 rm -rf /tmp/frp
 
 #获取服务器IP
